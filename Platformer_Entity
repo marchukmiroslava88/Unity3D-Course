@@ -1,0 +1,89 @@
+Player
+- MovementSpeed
+- JumpForce
+- SlidingSpeed
+- Health
+
+-- Movement()
+-- Jump()
+-- Sliding()
+-- TakeDamage()
+-- RestoreHealth()
+-- Attack()
+
+-*- OnPlayerDeath
+    - start level from last check point
+    - respawn enemies
+    - restore health
+    - remove all coins from inventory
+-*- OnStartDialog
+
+Animator
+--
+
+Enemy
+- RangeAttack
+- AttackCooldown
+- Speed
+- Health
+- Coins
+
+-- Patrolling()
+-- AgroToHero()
+-- Attack()
+-- TakeDamage(int damage)
+-- HitCountToDestroy()
+
+-*- OnDestroy - add coins to inventory
+ 
+CheckPoint
+- CheckPoint
+-- Check()
+-- SpawnHero()
+-*- OnCheckPointTriggered 
+    - restore player health
+    - respawn enemies
+
+Inventory
+- CoatOfArms
+- Coins
+-- Add()
+-- Remove()
+-*- OnChangeInventory
+
+Equipment
+- Weapon
+- CoatOfArms
+- HealthFlasks
+-- Add()
+-- Remove()
+-*- OnChangeEquipment
+    - update inventory
+    - update player properties
+
+PlayerData
+- Health
+- CheckPointData
+- InventoryData
+- EquipmentData
+
+SaveSystem
+-- Save(PlayerData)
+-- Load()
+
+DialogCharacter
+{
+	Player,
+	NPC
+}
+
+PhraseData
+- Who - DialogCharacter
+- Phrase - string
+
+DialogData
+- List<PhraseData> Phrases;
+- string name;
+
+DialogSystem
+-- StartDialog(DialogData)
