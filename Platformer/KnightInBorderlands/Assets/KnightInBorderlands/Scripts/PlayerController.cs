@@ -28,7 +28,7 @@ namespace KnightInBorderlands.Scripts
         private void Start()
         {    
             _inputActionHit = _playerInputActions.actions.FindAction("Hit");
-            _armature.animation.Play("idle a");
+            _armature.animation.Play("sit");
         }
 
         private void FixedUpdate()
