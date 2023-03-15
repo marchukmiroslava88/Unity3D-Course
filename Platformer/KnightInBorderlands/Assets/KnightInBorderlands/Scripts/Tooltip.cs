@@ -4,16 +4,23 @@ namespace KnightInBorderlands.Scripts
 {
     public class Tooltip : MonoBehaviour
     {
+        [SerializeField] private GameObject _interactWithObject;
         public string message;
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            TooltipManager._instance.SetAndShowTooltip(message);
+            if (other.gameObject.name == _interactWithObject.name)
+            {
+                TooltipManager._instance.SetAndShowTooltip(message);  
+            }
         }
         
         private void OnTriggerExit2D(Collider2D other)
         {
-            TooltipManager._instance.HideToolTip();
+            if (other.gameObject.name == _interactWithObject.name)
+            {
+                TooltipManager._instance.HideToolTip();
+            }
         }
     }
 }

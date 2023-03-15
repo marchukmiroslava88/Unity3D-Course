@@ -6,7 +6,7 @@ namespace KnightInBorderlands.Scripts
     public class TooltipManager : MonoBehaviour
     {
         public static TooltipManager _instance;
-        public TextMeshProUGUI textComponent;
+        [SerializeField] private TextMeshProUGUI _textComponent;
     
         private void Awake()
         {
@@ -24,21 +24,16 @@ namespace KnightInBorderlands.Scripts
         {
             gameObject.SetActive(false);
         }
-    
-        private void Update()
-        {
-        
-        }
 
         public void SetAndShowTooltip(string message)
         {
-            textComponent.text = message;
+            _textComponent.text = message;
             gameObject.SetActive(true);
         }
 
         public void HideToolTip()
         {
-            textComponent.text = string.Empty;
+            _textComponent.text = string.Empty;
             gameObject.SetActive(false);
         }
     }

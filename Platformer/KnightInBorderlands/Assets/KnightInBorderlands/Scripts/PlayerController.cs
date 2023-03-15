@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DragonBones;
+using KnightInBorderlands.Scripts.LevelManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,6 +16,7 @@ namespace KnightInBorderlands.Scripts
         [SerializeField] private float _jumpTime;
         [SerializeField] private float _jumpTimeCounter;
         [SerializeField] private LayerMask _layer;
+        [SerializeField] private LayerMask _checkPointLayer;
         [SerializeField] private UnityArmatureComponent _armature;
         [SerializeField] private PlayerInput _playerInputActions;
         
@@ -23,12 +25,13 @@ namespace KnightInBorderlands.Scripts
         private bool _isGrounded = true;
         private bool _isMoving;
         private bool _isHit;
+        private bool _isCheckpoint;
         private InputAction _inputActionHit;
         
         private void Start()
         {    
             _inputActionHit = _playerInputActions.actions.FindAction("Hit");
-            _armature.animation.Play("sit");
+            _armature.animation.Play("idle a");
         }
 
         private void FixedUpdate()
@@ -111,6 +114,16 @@ namespace KnightInBorderlands.Scripts
             }
         }
         
+        public void Interact(InputAction.CallbackContext context)
+        {
+            if (_isCheckpoint && _isGrounded)
+            {
+                TooltipManager._instance.HideToolTip();
+                CheckPoint._instance.Check(transform.position);
+                _armature.animation.Play("sit", 1);
+            }
+        }
+        
         private bool IsGrounded()
         {
             var bounds = _capsuleCollider2d.bounds;
@@ -148,6 +161,21 @@ namespace KnightInBorderlands.Scripts
             _isHit = false;
             _inputActionHit.Enable();
             _armature.animation.Play(_isMoving ? "run" : "idle a");  
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if ((_checkPointLayer.value & (1 << other.gameObject.layer)) > 0)
+            {
+                _isCheckpoint = true;
+            }
+        }
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if ((_checkPointLayer.value & (1 << other.gameObject.layer)) > 0)
+            {
+                _isCheckpoint = false;
+            }
         }
     }
 }
