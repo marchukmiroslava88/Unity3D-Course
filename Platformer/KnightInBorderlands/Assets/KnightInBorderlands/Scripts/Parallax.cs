@@ -17,7 +17,7 @@ namespace KnightInBorderlands.Scripts
         private void Update()
         {
             var distance = (_cam.transform.position.x * _parallaxEffect);
-            transform.position = new Vector3(_startPosition + distance, transform.position.y, transform.position.z);
+            transform.position = new Vector2(_startPosition + distance, transform.position.y);
         }
     }
 }

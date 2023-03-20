@@ -11,7 +11,7 @@ namespace KnightInBorderlands.Scripts
         {
             if (other.gameObject.name == _interactWithObject.name)
             {
-                TooltipManager._instance.SetAndShowTooltip(message);  
+                TooltipManager.Instance.SetAndShowTooltip(message);  
             }
         }
         
@@ -19,7 +19,7 @@ namespace KnightInBorderlands.Scripts
         {
             if (other.gameObject.name == _interactWithObject.name)
             {
-                TooltipManager._instance.HideToolTip();
+                TooltipManager.Instance.HideToolTip();
             }
         }
     }

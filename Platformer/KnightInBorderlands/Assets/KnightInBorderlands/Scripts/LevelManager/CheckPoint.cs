@@ -1,16 +1,19 @@
+using KnightInBorderlands.Scripts.Components;
 using UnityEngine;
 
 namespace KnightInBorderlands.Scripts.LevelManager
 {
     public class CheckPoint : MonoBehaviour
     {
-        public static CheckPoint _instance;
+        public static CheckPoint Instance;
         public Vector2 _checkPointPosition;
-        private void Awake()
+        [SerializeField] private GameObject _player;
+        
+        private void Awake() 
         {
-            if (_instance == null)
+            if (Instance == null)
             {
-                _instance = this;
+                Instance = this;
                 DontDestroyOnLoad(gameObject);
             }
             else
@@ -19,15 +22,22 @@ namespace KnightInBorderlands.Scripts.LevelManager
             }
         }
 
+        private void Start()
+        {
+            SaveSystem.SavePlayer();
+        }
+
         public void Check(Vector2 position)
         {
             _checkPointPosition = position;
-            Debug.Log($"New _checkPointPosition {_checkPointPosition}");
+            HealthComponent.Instance.RestoreHealth();
+            SaveSystem.SavePlayer();
         }
         
         public void SpawnHero()
         {
-            
+            var data = SaveSystem.LoadPlayer();
+            _player.transform.position = JsonUtility.FromJson<Vector2>(data._position);
         }
     }
 }

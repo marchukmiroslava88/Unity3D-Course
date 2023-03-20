@@ -5,18 +5,18 @@ namespace KnightInBorderlands.Scripts
 {
     public class TooltipManager : MonoBehaviour
     {
-        public static TooltipManager _instance;
+        public static TooltipManager Instance;
         [SerializeField] private TextMeshProUGUI _textComponent;
     
         private void Awake()
         {
-            if (_instance != null && _instance != this)
+            if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
             }
             else
             {
-                _instance = this;
+                Instance = this;
             }
         }
 
