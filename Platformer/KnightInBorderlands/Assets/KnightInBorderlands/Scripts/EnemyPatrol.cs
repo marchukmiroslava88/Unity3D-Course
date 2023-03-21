@@ -47,10 +47,9 @@ namespace KnightInBorderlands.Scripts
 
         private void flip()
         {
-            var transform1 = transform;
-            var localScale = transform1.localScale;
+            var localScale = transform.localScale;
             localScale.x *= -1;
-            transform1.localScale = localScale;
+            transform.localScale = localScale;
         }
         
         private void OnDrawGizmos()

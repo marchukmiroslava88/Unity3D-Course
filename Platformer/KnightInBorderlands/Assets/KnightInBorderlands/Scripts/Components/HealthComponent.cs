@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 
 namespace KnightInBorderlands.Scripts.Components
 {
@@ -11,6 +12,8 @@ namespace KnightInBorderlands.Scripts.Components
         [SerializeField] private float _currentHealth;
         [SerializeField] private TakeDamageEvent _onTakeDamageEvent;
         [SerializeField] private DieEvent _onDieEvent;
+        private const float _cooldownTime = 0.5f;
+        private float _cooldownTimeCounter = 0.5f;
         
         private void Awake()
         {
@@ -24,14 +27,19 @@ namespace KnightInBorderlands.Scripts.Components
 
         public void TakeDamage(float _damage)
         {
-            _currentHealth = Math.Clamp(_currentHealth - _damage, 0, _startingHealth);
-            if (_currentHealth > 0)
+            if (Time.time > _cooldownTimeCounter)
             {
-                _onTakeDamageEvent?.Invoke(gameObject);  
-            }
-            else
-            {
-                _onDieEvent?.Invoke(gameObject);
+                _currentHealth = Math.Clamp(_currentHealth - _damage, 0, _startingHealth);
+                _cooldownTimeCounter = Time.time + _cooldownTime;
+                
+                if (_currentHealth > 0)
+                {
+                    _onTakeDamageEvent?.Invoke(gameObject);
+                }
+                else
+                {
+                    _onDieEvent?.Invoke(gameObject);
+                }
             }
         }
 

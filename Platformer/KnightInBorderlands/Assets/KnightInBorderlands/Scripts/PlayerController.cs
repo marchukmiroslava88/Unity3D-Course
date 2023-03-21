@@ -20,8 +20,8 @@ namespace KnightInBorderlands.Scripts
         [SerializeField] private float _wallJumpTime;
         [SerializeField] private float _wallJumpTimeCounter;
         [SerializeField] private float _slidingSpeed;
+        [SerializeField] private float _knockbackSpeed;
         [SerializeField] private LayerMask _groundLayer;
-        [SerializeField] private LayerMask _checkPointLayer;
         [SerializeField] private LayerMask _wallLayer; 
         [SerializeField] private UnityArmatureComponent _armature;
         [SerializeField] private PlayerInput _playerInputActions;
@@ -50,22 +50,22 @@ namespace KnightInBorderlands.Scripts
             _isGrounded = IsGrounded();
             _isWallSlide = IsWallSlide();
 
-            if (_isJump)
+            if (_isJump && !_isHurt)
             {
                 Jump();
             }
             
-            if (_isWallJump)
+            if (_isWallJump && !_isHurt)
             {
                 WallJump();
             }
             
-            if (_isWallSlide)
+            if (_isWallSlide && !_isHurt)
             {
                 WallSliding();
             }
             
-            if (!_isWallJump)
+            if (!_isWallJump && !_isHurt)
             {
                 Move();
             }
@@ -73,11 +73,13 @@ namespace KnightInBorderlands.Scripts
         
         public void TakeDamage()
         {
+            _isHurt = true;
             _playerInputActions.actions.Disable();
             var direction = _armature.armature.flipX ? 1f : -1f;
-            _rigidbody2D.AddForce(new Vector2(direction * 22f, 22f), ForceMode2D.Impulse);
+            _rigidbody2D.velocity = new Vector2(direction * _knockbackSpeed, _knockbackSpeed);
+                
             _armature.animation.Play("hurt a", 1);
-            StartCoroutine(Wait(0.5f, () => { }));
+            StartCoroutine(Wait(0.5f, () => {_isHurt = false;}));
         }
 
         public void Die()
