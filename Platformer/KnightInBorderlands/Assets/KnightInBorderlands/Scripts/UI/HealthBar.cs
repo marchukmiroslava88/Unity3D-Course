@@ -13,12 +13,12 @@ namespace KnightInBorderlands.Scripts.UI
 
         private void Start()
         {
-            _totalHealthBar.fillAmount = _playerHealth._currentHealth / 5;
+            _totalHealthBar.fillAmount = _playerHealth.CurrentHealth / 5;
         }
         
         private void Update()
         {
-            _currentHealthBar.fillAmount = _playerHealth._currentHealth / 5;
+            _currentHealthBar.fillAmount = _playerHealth.CurrentHealth / 5;
         }
     }
 }

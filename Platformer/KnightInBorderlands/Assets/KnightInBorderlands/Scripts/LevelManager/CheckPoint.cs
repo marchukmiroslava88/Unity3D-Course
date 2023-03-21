@@ -6,7 +6,7 @@ namespace KnightInBorderlands.Scripts.LevelManager
     public class CheckPoint : MonoBehaviour
     {
         public static CheckPoint Instance;
-        public Vector2 _checkPointPosition;
+        [SerializeField] private Vector2 _checkPointPosition;
         [SerializeField] private GameObject _player;
         
         private void Awake() 
@@ -39,5 +39,7 @@ namespace KnightInBorderlands.Scripts.LevelManager
             var data = SaveSystem.LoadPlayer();
             _player.transform.position = JsonUtility.FromJson<Vector2>(data._position);
         }
+
+        public Vector2 CheckPointPosition => _checkPointPosition;
     }
 }

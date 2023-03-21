@@ -5,7 +5,7 @@ namespace KnightInBorderlands.Scripts.Components
     public class InventoryComponent : MonoBehaviour
     {
         public static InventoryComponent Instance;
-        public CollectableType _inventoryItem;
+        [SerializeField] private CollectableType _inventoryItem;
         
         private void Awake()
         {
@@ -30,5 +30,7 @@ namespace KnightInBorderlands.Scripts.Components
         {
             
         }
+
+        public CollectableType InventoryItem => _inventoryItem;
     }
 }

@@ -11,9 +11,9 @@ namespace KnightInBorderlands.Scripts.Data
         public string _position;
         public CollectableType _inventoryItem;
         
-        public string CheckPointData = JsonUtility.ToJson(CheckPoint.Instance._checkPointPosition);
-        public float Health = HealthComponent.Instance._currentHealth;
-        public CollectableType inventoryItemData = InventoryComponent.Instance._inventoryItem;
+        public string CheckPointData = JsonUtility.ToJson(CheckPoint.Instance.CheckPointPosition);
+        public float Health = HealthComponent.Instance.CurrentHealth;
+        public CollectableType inventoryItemData = InventoryComponent.Instance.InventoryItem;
         
         public PlayerData()
         {

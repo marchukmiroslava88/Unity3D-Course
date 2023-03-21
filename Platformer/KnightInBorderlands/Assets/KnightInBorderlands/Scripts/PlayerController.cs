@@ -5,6 +5,7 @@ using KnightInBorderlands.Scripts.Components;
 using KnightInBorderlands.Scripts.LevelManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 namespace KnightInBorderlands.Scripts
 {
@@ -24,7 +25,7 @@ namespace KnightInBorderlands.Scripts
         [SerializeField] private LayerMask _wallLayer; 
         [SerializeField] private UnityArmatureComponent _armature;
         [SerializeField] private PlayerInput _playerInputActions;
-        [SerializeField] private HealthComponent _health;
+        [SerializeField] private SpawnEvent _spawnEvent;
         
         private Vector2 _direction;
         private bool _isJump;
@@ -34,17 +35,18 @@ namespace KnightInBorderlands.Scripts
         private bool _isCheckpoint;
         private bool _isWallSlide;
         private bool _isWallJump;
+        private bool _isHurt;
         private float _wallJumpingDirection;
         private InputAction _inputActionHit;
         
         private void Start()
         {
             _inputActionHit = _playerInputActions.actions.FindAction("Hit");
-            _armature.animation.Play("idle a");
+            _armature.animation.Play("idle a", 1);
         }
 
         private void FixedUpdate()
-        { 
+        {
             _isGrounded = IsGrounded();
             _isWallSlide = IsWallSlide();
 
@@ -68,7 +70,28 @@ namespace KnightInBorderlands.Scripts
                 Move();
             }
         }
+        
+        public void TakeDamage()
+        {
+            _playerInputActions.actions.Disable();
+            var direction = _armature.armature.flipX ? 1f : -1f;
+            _rigidbody2D.AddForce(new Vector2(direction * 22f, 22f), ForceMode2D.Impulse);
+            _armature.animation.Play("hurt a", 1);
+            StartCoroutine(Wait(0.5f, () => { }));
+        }
 
+        public void Die()
+        {
+            _playerInputActions.actions.Disable();
+            _armature.animation.Play("die a", 1);
+            StartCoroutine(Wait(0.5f, () =>
+            {
+                _spawnEvent.Invoke(gameObject);
+                HealthComponent.Instance.RestoreHealth();
+                _armature.animation.Play("idle a", 1);
+            }));
+        }
+        
         public void onMove(InputAction.CallbackContext context)
         {
             _direction = context.ReadValue<Vector2>();
@@ -85,10 +108,11 @@ namespace KnightInBorderlands.Scripts
                 _isMoving = true;
                 _armature.animation.Play("run");
             }
-        
-            if (context.started && !_isGrounded)
+
+            if (context.started || context.performed && !_isGrounded)
             {
                 _isMoving = true;
+                _armature.animation.Play("jump b");
             }
         
             if (context.canceled)
@@ -183,7 +207,6 @@ namespace KnightInBorderlands.Scripts
         {
             if (_isWallSlide && !_isGrounded && !_isWallJump)
             {
-                Debug.Log($"WallSliding");
                 _rigidbody2D.velocity = new Vector2(
                     _direction.x, 
                     Math.Clamp( _rigidbody2D.velocity.y, -_slidingSpeed, float.MaxValue)
@@ -234,22 +257,24 @@ namespace KnightInBorderlands.Scripts
             _inputActionHit.Enable();
             _armature.animation.Play(_isMoving ? "run" : "idle a");  
         }
-
-        private void OnTriggerEnter2D(Collider2D other)
+        
+        private IEnumerator Wait(float time, Action callback)
         {
-            if ((_checkPointLayer.value & (1 << other.gameObject.layer)) > 0)
-            {
-                _isCheckpoint = true;
-            }
+            yield return new WaitForSeconds(time);
+            _playerInputActions.actions.Enable();
+            callback?.Invoke();
         }
-        private void OnTriggerExit2D(Collider2D other)
+
+        public void SetCheckPoint(bool isCheckpoint)
         {
-            if ((_checkPointLayer.value & (1 << other.gameObject.layer)) > 0)
-            {
-                _isCheckpoint = false;
-            }
+            _isCheckpoint = isCheckpoint;
         }
     }
+   
+   [Serializable]
+   public class SpawnEvent : UnityEvent<GameObject>
+   {
+   }
 }
 
 
