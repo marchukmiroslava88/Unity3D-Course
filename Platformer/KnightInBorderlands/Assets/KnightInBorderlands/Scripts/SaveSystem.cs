@@ -14,8 +14,6 @@ namespace KnightInBorderlands.Scripts
             var data = new PlayerData();
             bf.Serialize(file, data);
             file.Close();
-            
-            Debug.Log($"Game data saved! {data._position}, {data._hp}, {data._inventoryItem}");
         }
 
         public static PlayerData LoadPlayer()
@@ -26,8 +24,6 @@ namespace KnightInBorderlands.Scripts
                 var file = File.Open(Application.persistentDataPath + "/PlayerData.dat", FileMode.Open);
                 var data = (PlayerData)bf.Deserialize(file);
                 file.Close();
-           
-                Debug.Log($"Game data loaded!, {data}");
                 return data;
             }
 

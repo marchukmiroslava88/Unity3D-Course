@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace KnightInBorderlands.Scripts
 
         private void Start()
         {
-            gameObject.SetActive(false);
+            StartCoroutine(HideDescription());
         }
 
         public void SetAndShowTooltip(string message)
@@ -34,6 +35,12 @@ namespace KnightInBorderlands.Scripts
         public void HideToolTip()
         {
             _textComponent.text = string.Empty;
+            gameObject.SetActive(false);
+        }
+        
+        private IEnumerator HideDescription()
+        {
+            yield return new WaitForSeconds(3f);
             gameObject.SetActive(false);
         }
     }

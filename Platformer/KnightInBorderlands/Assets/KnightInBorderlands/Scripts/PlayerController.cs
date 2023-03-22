@@ -26,6 +26,10 @@ namespace KnightInBorderlands.Scripts
         [SerializeField] private UnityArmatureComponent _armature;
         [SerializeField] private PlayerInput _playerInputActions;
         [SerializeField] private SpawnEvent _spawnEvent;
+        [SerializeField] private GameObject _attackPoint;
+        [SerializeField] private float _attackRadius;
+        [SerializeField] private LayerMask _enemiesLayer;
+        [SerializeField] private float _damage = 1;
         
         private Vector2 _direction;
         private bool _isJump;
@@ -33,6 +37,7 @@ namespace KnightInBorderlands.Scripts
         private bool _isMoving;
         private bool _isHit;
         private bool _isCheckpoint;
+        private bool _isDialogue;
         private bool _isWallSlide;
         private bool _isWallJump;
         private bool _isHurt;
@@ -156,9 +161,28 @@ namespace KnightInBorderlands.Scripts
             if (context.started && !_isWallSlide)
             {
                 _isHit = true;
+                var _hitDirection = _armature.armature.flipX ? -1f : 1f;
+                _attackPoint.transform.localScale = new Vector3(_hitDirection * 2f, 1, 1);
+
                 _armature.animation.Play(_isGrounded ? "attack a" : "attack c", 1);
                 _inputActionHit.Disable();
-                StartCoroutine(EnableAttack()); 
+
+                StartCoroutine(Wait(0.5f, () =>
+                {
+                    _isHit = false;
+                    _inputActionHit.Enable();
+                    _armature.animation.Play(_isMoving ? "run" : "idle a");
+
+                    var enemy = Physics2D.OverlapCircle(_attackPoint.transform.position, _attackRadius, _enemiesLayer);
+    
+                    if (enemy)
+                    {
+                        if (enemy.TryGetComponent<EnemyHealth>(out var component))
+                        {
+                            component._health -= _damage;
+                        }
+                    }
+                }));
             }
         }
         
@@ -169,6 +193,12 @@ namespace KnightInBorderlands.Scripts
                 TooltipManager.Instance.HideToolTip();
                 CheckPoint.Instance.Check(transform.position);
                 _armature.animation.Play("sit", 1);
+            }
+
+            if (context.started && _isDialogue)
+            {
+                _isDialogue = false;
+                Dialogue.Instance.StartDialogue();
             }
         }
         
@@ -252,14 +282,6 @@ namespace KnightInBorderlands.Scripts
             _armature.animation.Play(_isMoving ? "run" : "idle a");
         }
         
-        private IEnumerator EnableAttack()
-        {
-            yield return new WaitForSeconds(0.5f);
-            _isHit = false;
-            _inputActionHit.Enable();
-            _armature.animation.Play(_isMoving ? "run" : "idle a");  
-        }
-        
         private IEnumerator Wait(float time, Action callback)
         {
             yield return new WaitForSeconds(time);
@@ -270,6 +292,11 @@ namespace KnightInBorderlands.Scripts
         public void SetCheckPoint(bool isCheckpoint)
         {
             _isCheckpoint = isCheckpoint;
+        }
+        
+        public void SetDialogue(bool isDialogue)
+        {
+            _isDialogue = isDialogue;
         }
     }
    

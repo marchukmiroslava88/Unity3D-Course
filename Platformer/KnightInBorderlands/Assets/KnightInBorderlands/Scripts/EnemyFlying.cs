@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 namespace KnightInBorderlands.Scripts
@@ -8,6 +8,9 @@ namespace KnightInBorderlands.Scripts
         public float speed;
         [SerializeField] private GameObject _player;
         [SerializeField] private bool _isChase;
+        [SerializeField] private Animator _animator;
+        [SerializeField] private Rigidbody2D _rigidbody;
+        private static readonly int IsDead = Animator.StringToHash("isDead");
         public Transform startingPoint;
         
         private void Update()
@@ -17,15 +20,23 @@ namespace KnightInBorderlands.Scripts
                 return;
             }
 
-            if (_isChase)
+            if (!_animator.GetBool(IsDead))
             {
-                Chase();
+                if (_isChase)
+                {
+                    Chase();
+                }
+                else
+                {
+                    ReturnToStartPoint();
+                }
+                Flip(); 
             }
             else
             {
-                ReturnToStartPoint();
+                _rigidbody.bodyType = RigidbodyType2D.Dynamic;
+                StartCoroutine(Destroy());
             }
-            Flip();
         }
 
         private void ReturnToStartPoint()
@@ -52,5 +63,11 @@ namespace KnightInBorderlands.Scripts
         }
 
         public void isChase(bool chase) => _isChase = chase;
+        
+        private IEnumerator Destroy()
+        {
+            yield return new WaitForSeconds(0.5f);
+            Destroy(gameObject);
+        }
     }
 }
