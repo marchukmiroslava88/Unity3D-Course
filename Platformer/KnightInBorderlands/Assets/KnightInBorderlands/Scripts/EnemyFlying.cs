@@ -22,6 +22,7 @@ namespace KnightInBorderlands.Scripts
 
             if (!_animator.GetBool(IsDead))
             {
+                if (_animator.GetCurrentAnimatorStateInfo(0).IsName("hurt")) return;
                 if (_isChase)
                 {
                     Chase();
@@ -30,7 +31,7 @@ namespace KnightInBorderlands.Scripts
                 {
                     ReturnToStartPoint();
                 }
-                Flip(); 
+                Flip();
             }
             else
             {

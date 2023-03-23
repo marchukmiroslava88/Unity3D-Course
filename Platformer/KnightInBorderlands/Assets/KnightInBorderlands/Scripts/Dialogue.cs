@@ -50,11 +50,5 @@ namespace KnightInBorderlands.Scripts
                 yield return new WaitForSeconds(_textSpeed);
             }
         }
-        
-        public void onInteract(InputAction.CallbackContext context)
-        {
-            Debug.Log(context.action);
-            StartDialogue();
-        }
     }
 }

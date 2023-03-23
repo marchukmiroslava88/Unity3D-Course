@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace KnightInBorderlands.Scripts
@@ -12,7 +13,8 @@ namespace KnightInBorderlands.Scripts
         private Transform _currentPoint;
         public float _speed;
         private static readonly int IsWalking = Animator.StringToHash("isWalking");
-
+        private static readonly int IsDead = Animator.StringToHash("isDead");
+        
         private void Start()
         {
             _currentPoint = pointB.transform;
@@ -21,27 +23,32 @@ namespace KnightInBorderlands.Scripts
 
         private void Update()
         {
-            Vector2 point = _currentPoint.position - transform.position;
+            if (!_animator.GetBool(IsDead))
+            {
+                if (_animator.GetCurrentAnimatorStateInfo(0).IsName("hit")) return;
+                if (_currentPoint == pointB.transform)
+                {
+                    _rigidbody.velocity = new Vector2(_speed, 0);
+                }
             
-            if (_currentPoint == pointB.transform)
+                if (_currentPoint == pointA.transform)
+                {
+                    _rigidbody.velocity = new Vector2(-_speed, 0);
+                }
+                if (Vector2.Distance(transform.position, _currentPoint.position) < 1f && _currentPoint == pointB.transform)
+                {
+                    _currentPoint = pointA.transform;
+                    flip();
+                }
+                if (Vector2.Distance(transform.position, _currentPoint.position) < 1f && _currentPoint == pointA.transform)
+                {
+                    _currentPoint = pointB.transform;
+                    flip();
+                }
+            }  
+            else
             {
-                _rigidbody.velocity = new Vector2(_speed, 0);
-            }
-            
-            if (_currentPoint == pointA.transform)
-            {
-                _rigidbody.velocity = new Vector2(-_speed, 0);
-            }
-
-            if (Vector2.Distance(transform.position, _currentPoint.position) < 1f && _currentPoint == pointB.transform)
-            {
-                _currentPoint = pointA.transform;
-                flip();
-            }
-            if (Vector2.Distance(transform.position, _currentPoint.position) < 1f && _currentPoint == pointA.transform)
-            {
-                _currentPoint = pointB.transform;
-                flip();
+                StartCoroutine(Destroy());
             }
         }
 
@@ -59,6 +66,12 @@ namespace KnightInBorderlands.Scripts
             Gizmos.DrawWireSphere(position, 0.5f);
             Gizmos.DrawWireSphere(position1, 0.5f);
             Gizmos.DrawLine(position, position1);
+        }
+        
+        private IEnumerator Destroy()
+        {
+            yield return new WaitForSeconds(1f);
+            Destroy(gameObject);
         }
     }
 }

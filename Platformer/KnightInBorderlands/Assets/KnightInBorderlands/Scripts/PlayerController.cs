@@ -47,7 +47,7 @@ namespace KnightInBorderlands.Scripts
         private void Start()
         {
             _inputActionHit = _playerInputActions.actions.FindAction("Hit");
-            _armature.animation.Play("idle a", 1);
+            _armature.animation.Play("idle a");
         }
 
         private void FixedUpdate()
@@ -113,19 +113,28 @@ namespace KnightInBorderlands.Scripts
             if (context.performed && _isGrounded)
             {
                 _isMoving = true;
-                _armature.animation.Play("run");
+                if (!_isHit)
+                {
+                    _armature.animation.Play("run");
+                }
             }
 
             if (context.started || context.performed && !_isGrounded)
             {
                 _isMoving = true;
-                _armature.animation.Play("jump b");
+                if (!_isHit)
+                {
+                    _armature.animation.Play("jump b");
+                }
             }
         
             if (context.canceled)
             { 
                 _isMoving = false;
-                StartCoroutine(MoveFinallyAnimation());
+                if (!_isHit)
+                {
+                    StartCoroutine(MoveFinallyAnimation());
+                }
             }
         }
 
@@ -135,14 +144,20 @@ namespace KnightInBorderlands.Scripts
             {
                 _wallJumpTimeCounter = _wallJumpTime;
                 _isWallJump = true;
-                _armature.animation.Play("jump a");
+                if (!_isHit)
+                {
+                    _armature.animation.Play("jump a");
+                }
             }
              
             if (context.started && _isGrounded && !_isWallSlide)
             {
                 _jumpTimeCounter = _jumpTime;
                 _isJump = true;
-                _armature.animation.Play("jump a");
+                if (!_isHit)
+                {
+                    _armature.animation.Play("jump a");
+                }
             }
 
             if (context.canceled || context.performed)
