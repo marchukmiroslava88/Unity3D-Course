@@ -194,7 +194,7 @@ namespace KnightInBorderlands.Scripts
                     {
                         if (enemy.TryGetComponent<EnemyHealth>(out var component))
                         {
-                            component._health -= _damage;
+                            component.Health -= _damage;
                         }
                     }
                 }));

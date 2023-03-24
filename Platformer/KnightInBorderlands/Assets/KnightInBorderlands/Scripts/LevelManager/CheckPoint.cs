@@ -37,7 +37,7 @@ namespace KnightInBorderlands.Scripts.LevelManager
         public void SpawnHero()
         {
             var data = SaveSystem.LoadPlayer();
-            _player.transform.position = JsonUtility.FromJson<Vector2>(data._position);
+            _player.transform.position = JsonUtility.FromJson<Vector2>(data.Position);
         }
 
         public Vector2 CheckPointPosition => _checkPointPosition;

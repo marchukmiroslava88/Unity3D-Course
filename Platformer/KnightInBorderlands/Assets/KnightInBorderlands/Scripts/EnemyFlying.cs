@@ -11,7 +11,7 @@ namespace KnightInBorderlands.Scripts
         [SerializeField] private Animator _animator;
         [SerializeField] private Rigidbody2D _rigidbody;
         private static readonly int IsDead = Animator.StringToHash("isDead");
-        public Transform startingPoint;
+        public Transform StartingPoint;
         
         private void Update()
         {
@@ -43,7 +43,7 @@ namespace KnightInBorderlands.Scripts
         private void ReturnToStartPoint()
         {
             transform.position =
-                Vector2.MoveTowards(transform.position, startingPoint.position, speed * Time.deltaTime);
+                Vector2.MoveTowards(transform.position, StartingPoint.position, speed * Time.deltaTime);
         }
         private void Chase()
         {

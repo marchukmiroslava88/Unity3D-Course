@@ -6,26 +6,26 @@ namespace KnightInBorderlands.Scripts
 {
     public class EnemyHealth : MonoBehaviour
     {
-        public float _health;
-        public float _currentHealth;
+        public float Health;
+        public float CurrentHealth;
         [SerializeField] private Animator _animator;
         private static readonly int IsDead = Animator.StringToHash("isDead");
         private static readonly int Attacked = Animator.StringToHash("Attacked");
 
         private void Start()
         {
-            _currentHealth = _health;
+            CurrentHealth = Health;
         }
 
         private void Update()
         {
-            if (_health < _currentHealth)
+            if (Health < CurrentHealth)
             {
-                _currentHealth = _health;
+                CurrentHealth = Health;
                 _animator.SetTrigger(Attacked);
             }
             
-            if (_health <= 0)
+            if (Health <= 0)
             {
                 _animator.SetBool(IsDead, true);
             }

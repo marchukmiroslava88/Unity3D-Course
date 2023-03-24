@@ -9,8 +9,8 @@ namespace KnightInBorderlands.Scripts
     {
         public static Dialogue Instance;
         [SerializeField] private TextMeshProUGUI _textComponent;
-        public string[] _lines;
-        public float _textSpeed;
+        public string[] Lines;
+        public float TextSpeed;
         
         private void Awake()
         {
@@ -44,10 +44,10 @@ namespace KnightInBorderlands.Scripts
         
         private IEnumerator TypeLine()
         {
-            foreach (string text in _lines)
+            foreach (string text in Lines)
             {
                 _textComponent.text += text;
-                yield return new WaitForSeconds(_textSpeed);
+                yield return new WaitForSeconds(TextSpeed);
             }
         }
     }
