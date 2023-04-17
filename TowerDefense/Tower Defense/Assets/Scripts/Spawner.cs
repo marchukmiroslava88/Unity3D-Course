@@ -26,7 +26,10 @@ public class Spawner : MonoBehaviour
         
         foreach (var enemy in wave.Enemies)
         {
-            Instantiate(enemy, SpawnManagerValues.SpawnPoints[currentSpawnPointIndex],  Quaternion.Euler(0,-90,0));
+            var enemyPrefab = Resources.Load(enemy.ToString()) as GameObject;
+
+            if (!enemyPrefab) continue;
+            Instantiate(enemyPrefab, SpawnManagerValues.SpawnPoints[currentSpawnPointIndex],  Quaternion.Euler(0,-90,0));
             currentSpawnPointIndex = (currentSpawnPointIndex + 1) % SpawnManagerValues.SpawnPoints.Length;
 
             yield return new WaitForSeconds(wave.TimeBetweenEnemySpawn);

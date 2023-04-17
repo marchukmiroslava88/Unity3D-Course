@@ -32,29 +32,6 @@ MonoBehaviour:
   - {x: 6, y: 0.5, z: 3}
   Waves:
   - TimeBetweenEnemySpawn: 10
-    Enemies:
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
+    Enemies: 0000000000000000000000000000000000000000
   - TimeBetweenEnemySpawn: 0
-    Enemies:
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
-    - {fileID: 170732, guid: fcb97c7a04dc1fd4084fa55c19988bb8, type: 3}
+    Enemies: 000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
