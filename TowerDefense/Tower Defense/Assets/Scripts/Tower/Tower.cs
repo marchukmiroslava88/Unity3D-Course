@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Tower
 {
@@ -8,54 +10,46 @@ namespace Tower
         [SerializeField] private LayerMask _raycastLayers;
         [SerializeField] private int _rayDistance;
         [SerializeField] private Transform _firePoint;
-        [SerializeField] private TowerScriptableObject _towerValues;
-        [SerializeField] private int _modifyLevel;
-        private float fireCountdown;
-        private TowerModify modifyTower;
-            
+        [SerializeField] private TowerType _type;
+        
+        private float _fireCountdown;
+        private TowerUI _towerUI;
+        private bool _isUIOpen;
+        
+        public int Level;
+        public TowerType Type => _type;
+        public List<TowerLevelData> TowerLevelData;
+
         private void Awake()
         {
-            modifyTower = TowerModify.Instance;
+            _towerUI = TowerUI.Instance;
+            TowerLevelData[Level].TowerHead.SetActive(true);
         }
 
         private void Update()
         {
-            // Test Tower Modify
-            // if (Input.GetKeyDown(KeyCode.A))
-            // {
-            //     if (_modifyLevel != _towerValues.TowerModifyLevels.Count - 1)
-            //     {
-            //         _modifyLevel += 1;
-            //     }
-            // }
-        
             var ray = new Ray(transform.position, transform.forward);
             if (Physics.Raycast(ray, out var hitResult, _rayDistance, _raycastLayers)) {
-                // Debug.Log($"Raycast hit: {hitResult.collider.name}");
- 
-                if (fireCountdown <= 0f)
+                if (_fireCountdown <= 0f)
                 {
                     StartCoroutine(Shoot());
-                    fireCountdown = 1f / _towerValues.TowerModifyLevels[_modifyLevel].FireRate; 
+                    _fireCountdown = 1f / TowerLevelData[Level].FireRate; 
                 }
-
-                fireCountdown -= Time.deltaTime;
+                _fireCountdown -= Time.deltaTime;
             }
         }
-
+  
         private void OnMouseDown()
         {
-            Vector2 screenPoint =
-                RectTransformUtility.WorldToScreenPoint(Camera.main, gameObject.transform.position);
-            modifyTower.Button.anchoredPosition = screenPoint - modifyTower.CanvasRectT.sizeDelta / 2f;
-            modifyTower.Button.gameObject.SetActive(true);
-            // _modifyButton.gameObject.SetActive(!_modifyButton.gameObject.activeSelf);
+            if(EventSystem.current.IsPointerOverGameObject()) return;
+            
+            _towerUI.SetCurrentTower(gameObject);
+            _towerUI.ShowUI();
         }
-        
+
         private IEnumerator Shoot()
         {
-            var tower = _towerValues.TowerModifyLevels[_modifyLevel];
-        
+            var tower = TowerLevelData[Level];
             for (int i = 0; i < tower.Bullets; i++)
             {
                 yield return new WaitForSeconds(tower.TimeBetweenShots);

@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 4
-  _damage: 2
+  _damage: 30
   _layerEnemy:
     serializedVersion: 2
     m_Bits: 256

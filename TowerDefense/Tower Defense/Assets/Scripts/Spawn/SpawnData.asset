@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c7c4e40886b44da58bb1785606d2f2b, type: 3}
   m_Name: SpawnData
   m_EditorClassIdentifier: 
-  TimeToFirstWaveStart: 5
+  TimeToFirstWaveStart: 15
   TimeBetweenWaves: 30
   SpawnPoints:
   - {x: 5, y: 0.5, z: 2}

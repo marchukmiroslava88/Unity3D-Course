@@ -963,12 +963,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e83d0dddd5348eeac1692ba6f6587d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1
+  _speed: 0.5
   _layerObstacle:
     serializedVersion: 2
     m_Bits: 192
   _animator: {fileID: 9565006}
-  _health: 5
+  _health: 100
+  _damage: 5
+  _attackRate: 0.5
 --- !u!136 &5484660937615643317
 CapsuleCollider:
   m_ObjectHideFlags: 0

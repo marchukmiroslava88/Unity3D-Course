@@ -1,44 +1,1 @@
-using UnityEngine;
-
-public class Node : MonoBehaviour
-{
-   public Color hoverColor;
-   private Renderer rend;
-   private Color startColor;
-   private GameObject turret;
-   private BuildManager buildManager;
-   
-   private void Start()
-   {
-      rend = GetComponent<Renderer>();
-      startColor = rend.material.color;
-      buildManager = BuildManager.Instance;
-   }
-
-   void OnMouseEnter()
-   { 
-      if (buildManager.GetTowerToBuild == null) return;
-      rend.material.color = hoverColor;
-   }
-   
-   void OnMouseDown()
-   {
-      if (buildManager.GetTowerToBuild == null) return;
-      
-      if (turret != null) return;
-
-      var transformPos = transform.position;
-      turret = Instantiate(
-         buildManager.GetTowerToBuild,
-         new Vector3(transformPos.x, 0.5f, transformPos.z),
-         Quaternion.Euler(0,90,0)
-         );
-
-      ShopItems.Instance.SetAllShopItemsOff();
-   }
-   
-   void OnMouseExit()
-   {
-      rend.material.color = startColor;
-   }
-}
+using Shop;using Tower;using UnityEngine;using UnityEngine.EventSystems;public class Node : MonoBehaviour{    public Color hoverColor;    private Renderer _rend;    private Color _startColor;    private GameObject _turret;    private BuildManager _buildManager;    private ShopItems _shopItems;    private PlayerStats _playerStats;    private TowerUI _towerUI;        private void Start()    {        _rend = GetComponent<Renderer>();        _startColor = _rend.material.color;        _buildManager = BuildManager.Instance;        _shopItems = ShopItems.Instance;        _playerStats = PlayerStats.Instance;        _towerUI = TowerUI.Instance;    }    private void OnMouseEnter()    {         if (_buildManager.GetTowerToBuild == TowerType.None) return;        if(EventSystem.current.IsPointerOverGameObject()) return;        _rend.material.color = hoverColor;    }    private void OnMouseDown()    {        if(EventSystem.current.IsPointerOverGameObject()) return;        var towerType = _buildManager.GetTowerToBuild;        if (_turret != null) return;        _towerUI.HideUI();                if (towerType == TowerType.None) return;               var price = _shopItems.ShopDataDictionary[towerType].Price;        if (_playerStats.Money >= price)        {            _playerStats.RemoveMoney(price);            var towerPrefab = Resources.Load(towerType.ToString()) as GameObject;            if (!towerPrefab) return;             var transformPos = transform.position;            _turret = Instantiate(                towerPrefab,                new Vector3(transformPos.x, 0.5f, transformPos.z),                Quaternion.Euler(0,90,0)            );        }              _buildManager.SetTowerToBuild(TowerType.None);        _shopItems.SetAllShopItemsOff();    }    private void OnMouseExit()    {        _rend.material.color = _startColor;    }}

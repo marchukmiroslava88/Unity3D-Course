@@ -1,3 +1,4 @@
+using Tower;
 using UnityEngine;
 
 public class BuildManager : MonoBehaviour
@@ -6,15 +7,10 @@ public class BuildManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
-        {
-            return;
-        }
-
+        if (Instance != null) return;
         Instance = this;
     }
     
-    public GameObject GetTowerToBuild { get; private set; }
-    
-    public void SetTowerToBuild(GameObject tower) => GetTowerToBuild = tower;
+    public TowerType GetTowerToBuild { get; private set; }
+    public void SetTowerToBuild(TowerType tower) => GetTowerToBuild = tower;
 }

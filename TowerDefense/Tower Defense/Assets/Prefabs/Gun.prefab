@@ -97,8 +97,20 @@ MonoBehaviour:
     m_Bits: 256
   _rayDistance: 10
   _firePoint: {fileID: 1804152175448962362}
-  _towerValues: {fileID: 11400000, guid: 17397ae839c9b433f84a770e837d2f62, type: 2}
-  _modifyLevel: 0
+  _level: 0
+  _fireCountdown: 0
+  _towerData:
+    _type: 2
+    _healthPoint: 100
+    TowerModifyLevels:
+    - FireRate: 0.3
+      BulletPrefab: {fileID: 1073945312778490, guid: a86d8d3f977ec4f24b1e6d71cd5dc262, type: 3}
+      Bullets: 1
+      TimeBetweenShots: 0.2
+    - FireRate: 0.3
+      BulletPrefab: {fileID: 1073945312778490, guid: a86d8d3f977ec4f24b1e6d71cd5dc262, type: 3}
+      Bullets: 2
+      TimeBetweenShots: 0.2
 --- !u!1001 &3822290057628827987
 PrefabInstance:
   m_ObjectHideFlags: 0

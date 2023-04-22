@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class WaveTimer : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI TimerValue;
-    [SerializeField] private TextMeshProUGUI TimerLabel;
+    [SerializeField] private TextMeshProUGUI _timerValue;
+    [SerializeField] private TextMeshProUGUI _timerLabel;
     public static float TimeRemaining;
     public static bool TimerIsRunning;
     public static bool IsFinalWave;
@@ -15,25 +15,25 @@ public class WaveTimer : MonoBehaviour
         if (IsFinalWave)
         {
             TimerIsRunning = false;
-            TimerValue.alignment = TextAlignmentOptions.Center;
-            TimerValue.text = "Final wave";
-            TimerLabel.text = "";
+            _timerValue.alignment = TextAlignmentOptions.Center;
+            _timerValue.text = "Final wave";
+            _timerLabel.text = "";
         }
         else
         {
             if (!TimerIsRunning) return;
             if (TimeRemaining > 0)
             {
-                TimerLabel.alignment = TextAlignmentOptions.Left;
-                TimerLabel.text = "Next wave in";
+                _timerLabel.alignment = TextAlignmentOptions.Left;
+                _timerLabel.text = "Next wave in";
                 DisplayTime(TimeRemaining);
                 TimeRemaining -= Time.deltaTime;
             }
             else
             {
-                TimerLabel.alignment = TextAlignmentOptions.Center;
-                TimerLabel.text = $"Wave {WaveNumber}";
-                TimerValue.text = "";
+                _timerLabel.alignment = TextAlignmentOptions.Center;
+                _timerLabel.text = $"Wave {WaveNumber}";
+                _timerValue.text = "";
                 TimerIsRunning = false;
             }
         }
@@ -43,6 +43,6 @@ public class WaveTimer : MonoBehaviour
     {
         float minutes = Mathf.FloorToInt(timeToDisplay / 60);  
         float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        TimerValue.text = $"{minutes:00}:{seconds:00}";
+        _timerValue.text = $"{minutes:00}:{seconds:00}";
     }
 }

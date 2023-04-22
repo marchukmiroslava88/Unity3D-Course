@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private LayerMask _layerObstacle;
     [SerializeField] private Animator _animator;
     [SerializeField] private int _health;
+    [SerializeField] private int _damage = 20;
+    [SerializeField] private float _attackRate = 2;
     private bool isObstacle;
     private static readonly int IsHit = Animator.StringToHash("isHit");
     private static readonly int IsAttack = Animator.StringToHash("isAttack");
@@ -15,7 +17,7 @@ public class Enemy : MonoBehaviour
  
     private void Update()
     {
-        if (!isObstacle) 
+        if (!isObstacle)
         {
             transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
         }
@@ -50,13 +52,30 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
     
+    private IEnumerator Attack(Tower.TowerHealth tower)
+    {
+        while (tower.HealthPoint > 0)
+        {
+            tower.TakeDamage(_damage);
+            yield return new WaitForSeconds(_attackRate);
+        }
+        
+        _animator.SetBool(IsAttack, false);
+        isObstacle = false;
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (((1 << other.gameObject.layer) & _layerObstacle) != 0)
-        {
+        { 
             isObstacle = true;
             _animator.SetBool(IsAttack, true);
             _animator.Play("Attack");
+
+            if (other.gameObject.TryGetComponent<Tower.TowerHealth>(out var tower))
+            {
+                StartCoroutine(Attack(tower));
+            }
         }
     }
 }
