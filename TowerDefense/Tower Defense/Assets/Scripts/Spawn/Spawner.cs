@@ -1,24 +1,45 @@
 using System.Collections;
+using Helpers;
+using TMPro;
 using UnityEngine;
 
 namespace Spawn
 {
     public class Spawner : MonoBehaviour
     {
+        [SerializeField] private TextMeshProUGUI _enemyValue;
+        [SerializeField] private GameObject _winUI;
         public SpawnManager SpawnManagerValues;
         private int CurrentWave;
-    
+        public static int EnemiesAlive;
+
+        private void Awake()
+        {
+            EventAggregator.Subscribe<EnemiesAliveChangeEvent>(EnemiesAliveChangeHandler);
+        }
+
+        private void EnemiesAliveChangeHandler(object sender, EnemiesAliveChangeEvent eventData)
+        {
+            EnemiesAlive = eventData.EnemiesAlive;
+            _enemyValue.text = EnemiesAlive.ToString();
+            if (WaveTimer.IsFinalWave && EnemiesAlive == 0)
+            {
+                _winUI.gameObject.SetActive(true);
+            }
+        }
+
         private void Start()
         {
             StartCoroutine(SpawnEnemies());
         }
-    
+
         private IEnumerator SpawnEnemies()
         {
             var currentSpawnPointIndex = 0;
             var wave = SpawnManagerValues.Waves[CurrentWave];
             WaveTimer.WaveNumber = CurrentWave + 1;
-        
+            EnemiesAliveChangeHandler(this, new EnemiesAliveChangeEvent{EnemiesAlive = wave.Enemies.Length});
+
             if (CurrentWave == 0)
             {
                 WaveTimer.TimeRemaining = SpawnManagerValues.TimeToFirstWaveStart;
@@ -56,5 +77,11 @@ namespace Spawn
                 StartCoroutine(SpawnEnemies());
             }
         }
+        
+        // IEnumerator LoadWinScene()
+        // {
+        //     yield return new WaitForSeconds(1f);
+        //     SceneManager.LoadScene("Scenes/Win");
+        // }
     }
 }

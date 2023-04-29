@@ -1,5 +1,9 @@
 using System.Collections;
+using Helpers;
+using Spawn;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
@@ -9,7 +13,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _health;
     [SerializeField] private int _damage = 20;
     [SerializeField] private float _attackRate = 2;
-    private bool isObstacle;
+    private bool _isObstacle;
+    private bool _isFrozen;
+    private bool _isDead;
     private static readonly int IsHit = Animator.StringToHash("isHit");
     private static readonly int IsAttack = Animator.StringToHash("isAttack");
     private const float hitAnimationTime = 0.2f;
@@ -17,27 +23,42 @@ public class Enemy : MonoBehaviour
  
     private void Update()
     {
-        if (!isObstacle)
+        if (!_isObstacle && !_isFrozen && !_isDead)
         {
             transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, float frozenTime)
     {
         _health -= damage;
         
         if (_health > 0)
         {
             _animator.SetBool(IsHit, true);
-            StartCoroutine(Hit()); 
+            StartCoroutine(Hit());
+            if (frozenTime > 0)
+            {
+                _isFrozen = true;
+                StartCoroutine(Freeze(frozenTime));
+            }
         }
         else
         {
+            _isDead = true;
             StartCoroutine(Die());
         }
-    } 
-
+    }
+    
+    private IEnumerator Freeze(float frozenTime)
+    {
+        var speed = _animator.speed;
+        _animator.speed = 0;
+        yield return new WaitForSeconds(frozenTime);
+        _animator.speed = speed;
+        _isFrozen = false;
+    }
+    
     private IEnumerator Hit()
     {
         _animator.Play("GetHit");
@@ -50,6 +71,8 @@ public class Enemy : MonoBehaviour
         _animator.Play("Die");
         yield return new WaitForSeconds(dieAnimationTime);
         Destroy(gameObject);
+        Spawner.EnemiesAlive -= 1;
+        EventAggregator.Post(this, new EnemiesAliveChangeEvent{EnemiesAlive = Spawner.EnemiesAlive});
     }
     
     private IEnumerator Attack(Tower.TowerHealth tower)
@@ -61,14 +84,14 @@ public class Enemy : MonoBehaviour
         }
         
         _animator.SetBool(IsAttack, false);
-        isObstacle = false;
+        _isObstacle = false;
     }
     
     private void OnTriggerEnter(Collider other)
     {
         if (((1 << other.gameObject.layer) & _layerObstacle) != 0)
-        { 
-            isObstacle = true;
+        {
+            _isObstacle = true;
             _animator.SetBool(IsAttack, true);
             _animator.Play("Attack");
 

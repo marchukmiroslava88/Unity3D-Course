@@ -1,5 +1,6 @@
 public enum EnemyType
 {
     Alien,
-    Crab
+    Crab,
+    Ant
 }

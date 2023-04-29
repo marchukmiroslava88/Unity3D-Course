@@ -9,22 +9,17 @@ namespace Shop
     {
         public static ShopItems Instance;
         [SerializeField] private ToggleGroup _shopItemsToggleGroup;
-        [SerializeField] private List<ShopData> _ShopDatas;
-        public Dictionary<TowerType, ShopData> ShopDataDictionary;
+        [SerializeField] private List<ShopData> _shopData;
+        public Dictionary<TowerType, ShopData> ShopData;
         
         private void Awake()
         {
             if (Instance != null) return;
             Instance = this;
-            ShopDataDictionary = new Dictionary<TowerType, ShopData>();
-            PrepareDictionary();
-        }
-
-        private void PrepareDictionary()
-        {
-            foreach (var data in _ShopDatas)
+            ShopData = new Dictionary<TowerType, ShopData>();
+            foreach (var data in _shopData)
             {
-                ShopDataDictionary[data.Type] = data;
+                ShopData[data.Type] = data;
             }
         }
 

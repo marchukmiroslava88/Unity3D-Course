@@ -18,7 +18,7 @@ namespace Shop
             _shopItems = ShopItems.Instance;
             _playerStats = PlayerStats.Instance;
             
-            var price = _shopItems.ShopDataDictionary[_type].Price;
+            var price = _shopItems.ShopData[_type].Price;
             
             _toggle.onValueChanged.AddListener(delegate(bool on)
             {

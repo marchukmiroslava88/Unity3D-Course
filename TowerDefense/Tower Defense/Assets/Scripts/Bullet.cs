@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -5,6 +6,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float _speed = 4f;
     [SerializeField] private int _damage = 1;
     [SerializeField] private LayerMask _layerEnemy;
+    [SerializeField] private float _frozenTime;
     
     private void Update()
     {
@@ -17,7 +19,7 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
             var enemy = other.gameObject.GetComponent<Enemy>();
-            enemy.TakeDamage(_damage);
+            enemy.TakeDamage(_damage, _frozenTime);
         }
     }
 }

@@ -53,12 +53,9 @@ MonoBehaviour:
     m_Bits: 0
   _rayDistance: 0
   _firePoint: {fileID: 0}
-  _level: 0
-  _towerData:
-    _type: 1
-    _healthPoint: 100
-    TowerModifyLevels: []
-  _generateMoneyTimer: 5
+  _type: 1
+  Level: 0
+  TowerLevelData: []
 --- !u!65 &386749977407707079
 BoxCollider:
   m_ObjectHideFlags: 0
