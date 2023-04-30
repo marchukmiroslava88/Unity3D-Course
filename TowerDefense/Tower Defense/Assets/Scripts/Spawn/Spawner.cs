@@ -77,11 +77,5 @@ namespace Spawn
                 StartCoroutine(SpawnEnemies());
             }
         }
-        
-        // IEnumerator LoadWinScene()
-        // {
-        //     yield return new WaitForSeconds(1f);
-        //     SceneManager.LoadScene("Scenes/Win");
-        // }
     }
 }

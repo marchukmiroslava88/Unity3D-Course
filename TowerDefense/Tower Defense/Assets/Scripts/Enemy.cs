@@ -1,9 +1,7 @@
 using System.Collections;
 using Helpers;
 using Spawn;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
