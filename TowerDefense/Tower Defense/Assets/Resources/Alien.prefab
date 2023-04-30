@@ -970,7 +970,7 @@ MonoBehaviour:
   _animator: {fileID: 9565006}
   _health: 100
   _damage: 18
-  _attackRate: 0.5
+  _attackRate: 2
 --- !u!136 &5484660937615643317
 CapsuleCollider:
   m_ObjectHideFlags: 0

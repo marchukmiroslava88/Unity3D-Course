@@ -15,7 +15,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _attackRate = 2;
     private bool _isObstacle;
     private bool _isFrozen;
-    private bool _isDead;
     private static readonly int IsHit = Animator.StringToHash("isHit");
     private static readonly int IsAttack = Animator.StringToHash("isAttack");
     private const float hitAnimationTime = 0.2f;
@@ -23,7 +22,7 @@ public class Enemy : MonoBehaviour
  
     private void Update()
     {
-        if (!_isObstacle && !_isFrozen && !_isDead)
+        if (!_isObstacle && !_isFrozen)
         {
             transform.Translate(Vector3.forward * (_speed * Time.deltaTime));
         }
@@ -45,7 +44,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            _isDead = true;
+            _speed = 0;
             StartCoroutine(Die());
         }
     }

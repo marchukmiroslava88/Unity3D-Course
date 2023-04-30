@@ -31,16 +31,15 @@ namespace Tower
             {
                 var towerLevelData = _tower.TowerLevelData;
                 
-                if (PlayerStats.Instance.Money >= _towerModifyPrice)
+                if (_tower.Level != towerLevelData.Count - 1)
                 {
-                    if (_tower.Level != towerLevelData.Count - 1)
-                    {
-                        towerLevelData[_tower.Level].TowerHead.SetActive(false);
-                        _tower.Level += 1; 
-                        towerLevelData[_tower.Level].TowerHead.SetActive(true);
-                        PlayerStats.Instance.RemoveMoney(_towerModifyPrice);
-                    }
-                    else
+                    if (PlayerStats.Instance.Money < _towerModifyPrice) return;
+                    towerLevelData[_tower.Level].TowerHead.SetActive(false);
+                    _tower.Level += 1;
+                    towerLevelData[_tower.Level].TowerHead.SetActive(true);
+                    PlayerStats.Instance.RemoveMoney(_towerModifyPrice);
+
+                    if (_tower.Level == towerLevelData.Count - 1)
                     {
                         _modifyButton.interactable = false;
                     }

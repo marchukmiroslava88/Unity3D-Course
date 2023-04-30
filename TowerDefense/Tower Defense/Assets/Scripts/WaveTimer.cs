@@ -9,7 +9,12 @@ public class WaveTimer : MonoBehaviour
     public static bool TimerIsRunning;
     public static bool IsFinalWave;
     public static int WaveNumber;
-    
+
+    private void Awake()
+    {
+        IsFinalWave = false;
+    }
+
     private void Update()
     {
         if (IsFinalWave)

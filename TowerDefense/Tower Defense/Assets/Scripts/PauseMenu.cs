@@ -8,6 +8,11 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Button _resumeButton;
     [SerializeField] private Button _menuButton;
     
+    private void Awake()
+    {
+        Time.timeScale = 1;
+    }
+    
     private void Start()
     {
         _settingButton.onClick.AddListener(delegate
