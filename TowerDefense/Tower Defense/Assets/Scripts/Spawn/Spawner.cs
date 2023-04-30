@@ -77,5 +77,10 @@ namespace Spawn
                 StartCoroutine(SpawnEnemies());
             }
         }
+        
+        private void OnDestroy()
+        {
+            EventAggregator.Unsubscribe<EnemiesAliveChangeEvent>(EnemiesAliveChangeHandler);
+        }
     }
 }
